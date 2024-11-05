@@ -1,4 +1,3 @@
-getgenv = getgenv or function() return _G end
 getgenv().deepCopy = function(original: Table)
 	local copy = {}
 	for k, v in pairs(original) do
