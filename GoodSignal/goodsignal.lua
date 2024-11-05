@@ -190,3 +190,4 @@ setmetatable(Signal, {
 })
 
 getgenv().signal = Signal
+return Signal -- incase anyone wants to loadstring this as a lib directly
