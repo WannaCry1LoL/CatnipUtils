@@ -1,8 +1,8 @@
 local basePath = "https://raw.githubusercontent.com/WannaCry1LoL/CatnipUtils/refs/heads/main/"
 local scriptsToLoad = {
-    "GoodSignal/goodsignal",
+    "GoodSignal/goodsignal.lua",
 }
 
 for i,v in ipairs(scriptsToLoad) do
-    loadstring(game:HttpGet(`{basepath}{v}.lua`))()
+    loadstring(game:HttpGet(`{basePath}{v}`))()
 end
