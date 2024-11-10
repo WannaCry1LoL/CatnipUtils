@@ -31,3 +31,10 @@ getgenv().randomString = function() -- yes this is from iy
 	end
 	return table.concat(array)
 end
+
+getgenv().tween = function(speed, cframe: CFrame)
+    local tween,err = pcall(function()
+		game:GetService("TweenService"):Create(player.Character["HumanoidRootPart"],TweenInfo.new(speed,Enum.EasingStyle.Linear),{CFrame=cframe}):Play()
+    end)
+    if not tween then return err end
+end
