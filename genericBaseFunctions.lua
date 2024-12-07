@@ -1,7 +1,7 @@
 getgenv().deepCopy = function(original: Table)
 	local copy = {}
 	for k, v in pairs(original) do
-		if type(v) == "table" then
+		if typeof(v) == "table" then
 			v = deepCopy(v)
 		end
 		copy[k] = v
@@ -34,7 +34,7 @@ end
 
 getgenv().tween = function(speed, cframe: CFrame)
     local tween,err = pcall(function()
-		game:GetService("TweenService"):Create(player.Character["HumanoidRootPart"],TweenInfo.new(speed,Enum.EasingStyle.Linear),{CFrame=cframe}):Play()
+		game:GetService("TweenService"):Create(game:GetService("Players").LocalPlayer.Character["HumanoidRootPart"],TweenInfo.new(speed,Enum.EasingStyle.Linear),{CFrame=cframe}):Play()
     end)
     if not tween then return err end
 end
