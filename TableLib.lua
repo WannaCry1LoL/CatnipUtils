@@ -152,14 +152,17 @@ function TableLib:filterType(arg: string)
 end
 
 function TableLib:Clone()
-	local copy = {}
-	for k, v in pairs(original) do
-		if typeof(v) == "table" then
-			v = deepCopy(v)
-		end
-		copy[k] = v
-	end
-	return copy
+    local function deepCopy(original: table)
+        local copy = {}
+        for k, v in pairs(original) do
+            if typeof(v) == "table" then
+                v = deepCopy(v)
+            end
+            copy[k] = v
+        end
+        return copy
+    end
+    return deepCopy(self.data)
 end
 
 
