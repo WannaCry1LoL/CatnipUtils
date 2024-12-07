@@ -119,7 +119,7 @@ function TableLib:foreach(func: (...any) -> ...any)
     end
 end
 
-function TableLib:toString()
+function TableLib:toString() : string
     return tostring(self.data)
 end
 
