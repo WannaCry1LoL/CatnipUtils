@@ -101,7 +101,7 @@ TableLib.__len = function(t1)
 end
 
 function TableLib.new(data: table)
-    assert(data != nil, "Expected table got nil")
+    assert(data ~= nil, "Expected table got nil")
     return setmetatable({ data = data }, TableLib)
 end
 
