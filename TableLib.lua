@@ -1,6 +1,8 @@
 local TableLib = {}
 TableLib.__index = TableLib
 
+TableUtils.__iter = function(t1) return next, t1.data end
+
 TableLib.__add = function(t1, t2) -- union
     local result = {}
     for i,v in pairs(t1.data) do
