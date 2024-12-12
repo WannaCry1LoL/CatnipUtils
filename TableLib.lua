@@ -1,7 +1,12 @@
+type Function = (...any) -> ...any
+type Predicate = (...any) -> boolean
+type Table = {[any] : any}
+
 local TableLib = {}
+
 TableLib.__index = TableLib
 
-TableUtils.__iter = function(t1) return next, t1.data end
+TableLib.__iter = function(t1) return next, t1.data end
 
 TableLib.__add = function(t1, t2) -- union
     local result = {}
@@ -39,7 +44,7 @@ TableLib.__eq = function(t1, t2)
 end 
 
 TableLib.__tostring = function(t1)
-    function serializeTable(val, name, skipnewlines, depth)
+    local function serializeTable(val, name, skipnewlines, depth)
         skipnewlines = skipnewlines or false
         depth = depth or 0
     
@@ -93,21 +98,20 @@ TableLib.__tostring = function(t1)
     return serializeTable(t1.data)
 end
 
-
 TableLib.__len = function(t1)
     local amount = 0
-    for i,v in pairs(t1.data) do
+    for i,v in t1 do
         amount += 1 
     end
     return amount
 end
 
-function TableLib.new(data: table)
+function TableLib.new(data: Table)
     assert(data ~= nil, "Expected table got nil")
     return setmetatable({ data = data }, TableLib)
 end
 
-function TableLib:map(func: (...any) -> ...any)
+function TableLib:map(func: Function)
     local result = {}
     for i,v in pairs(self.data) do
         result[i] = func(v)
@@ -115,9 +119,9 @@ function TableLib:map(func: (...any) -> ...any)
     return TableLib.new(result)
 end
 
-function TableLib:foreach(func: (...any) -> ...any)
+function TableLib:foreach(func: Function)
     for i,v in pairs(self.data) do
-        func(i,v)
+        func(i, v)
     end
 end
 
@@ -125,24 +129,24 @@ function TableLib:toString() : string
     return tostring(self.data)
 end
 
-function TableLib:any(func: (...any) -> ...any): boolean
+function TableLib:any(func: Predicate): boolean
     for i,v in pairs(self.data) do
-        if func(v) then return true end
+        if func(v, i) then return true end
     end
     return false
 end
 
-function TableLib:forall(func: (...any) -> ...any): boolean
+function TableLib:forall(func: Predicate): boolean
     for i,v in pairs(self.data) do
-        if not func(v) then return false end
+        if not func(v, i) then return false end
     end
     return true
 end
 
-function TableLib:filter(func: (...any) -> ...any)
+function TableLib:filter(func: Predicate)
     local result = {}
-    for i,v in pairs(self.data) do
-        if func(v) then
+    for i,v in self do
+        if func(v, i) then
             result[i] = v
         end
     end
@@ -153,8 +157,8 @@ function TableLib:filterType(arg: string)
     return self:filter(function(v) return typeof(v) == arg end)
 end
 
-function TableLib:Clone()
-    local function deepCopy(original: table)
+function TableLib:clone()
+    local function deepCopy(original: Table)
         local copy = {}
         for k, v in pairs(original) do
             if typeof(v) == "table" then
