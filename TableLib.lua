@@ -176,6 +176,4 @@ function TableLib:flatten()
     return error("Not implemented")
 end
 
-getgenv().tablelib = TableLib
-
 return TableLib
